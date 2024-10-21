@@ -25,6 +25,7 @@ We support DPR and Contriever as retrievers, and Llama-2, Vicuna, and Mistral as
 | Contriever | [contriever](https://huggingface.co/facebook/contriever) | same with question encoder | 
 
 | Reader | Link |
+| --- | --- |
 | Llama-2-7b |[Llama-2-7b-chat-hf](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf) |
 | Llama-2-13b | [Llama-2-13b-chat-hf](https://huggingface.co/meta-llama/Llama-2-13b-chat-hf) | 
 | vicuna-7b | [vicuna-7b-v1.5](https://huggingface.co/lmsys/vicuna-7b-v1.5) |
