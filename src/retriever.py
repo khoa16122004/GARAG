@@ -38,7 +38,9 @@ def _load_retriever(opt):
         d_encoder = Contriever.from_pretrained(os.path.join(opt.model_dir, hf_model_name[retriever_name])).to("cuda")
         q_encoder = d_encoder
     elif "dpr" in retriever_name:
-        tokenizer = AutoTokenizer.from_pretrained(os.path.join(opt.model_dir, hf_model_name[retriever_name][0]))
+        pretrained = os.path.join(opt.model_dir, hf_model_name[retriever_name][0])
+        print("Pretrained: ", pretrained)
+        tokenizer = AutoTokenizer.from_pretrained(pretrained)
         d_encoder = DPRC.from_pretrained(os.path.join(opt.model_dir, hf_model_name[retriever_name][0])).to("cuda")
         q_encoder = DPRQ.from_pretrained(os.path.join(opt.model_dir, hf_model_name[retriever_name][1])).to("cuda")
     else:

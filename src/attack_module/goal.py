@@ -136,8 +136,6 @@ class Reader_Wrapper(ModelWrapper):
 class Retriever_Wrapper(ModelWrapper):
     def __init__(self, opt):
         self.model = load_retriever(opt)
-        raise NotImplementedError("Not implemented for now")
-
         self.tokenizer = self.model.get_tokenizer()
         self.batch_size = opt.batch_size
         self.tokenizer_kwargs = {
