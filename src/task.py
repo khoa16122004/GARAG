@@ -15,6 +15,7 @@ def evaluate(data):
     result = [0,0,0]
     e2e = [0,0]
     count = 0
+    print(data)
     for d in data:
 
         if d["att"][-1][0][1][0] < 1:
