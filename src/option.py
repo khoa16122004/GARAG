@@ -3,10 +3,14 @@ import os
 from src.util import timestr, is_main
 
 class Options:
+
+    
     def __init__(self, task):
+        "Options parser parameters for attacking"
+        
         self.parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
         self.task = task
-        self.initialize()
+        self.initialize() 
 
     def initialize(self):
         # Basic Parameter
@@ -77,6 +81,8 @@ class Options:
         return message
 
     def parse(self, t):
+
+        
         opt, _ = self.parser.parse_known_args()
 
         opt.output_dir = opt.output_dir.format(name=opt.name, t=t)

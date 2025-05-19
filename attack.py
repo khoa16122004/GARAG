@@ -20,13 +20,13 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 def main():
     option = Options("attack")
-    opt, message = option.parse(timestr())
+    opt, message = option.parse(timestr()) # create 
     logger = init_logger(opt)
     logger.info(message)
     logger.info("The name of experiment is {}".format(opt.name))
     logger.info("Attack type is {}".format(opt.method))
 
-    dataset = ReaderDataset(opt)
+    dataset = ReaderDataset(opt) # get document dataset
     attack, dataset = build_attack(opt, dataset)
 
     if opt.is_black:
