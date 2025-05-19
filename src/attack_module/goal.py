@@ -162,7 +162,7 @@ class Retriever_Wrapper(ModelWrapper):
 
             scores = [float(score) for score in self.model(qs_embedding, ctxs_embedding)]
 
-            results += scores 
+            results += scores # append
 
         return results
     

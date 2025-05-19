@@ -28,7 +28,7 @@ def main():
 
     dataset = ReaderDataset(opt) # get document dataset
     attack, dataset = build_attack(opt, dataset)
-
+    print("Attacker and dataset done")
     if opt.is_black:
         result = attack.augment_dataset(dataset)
 

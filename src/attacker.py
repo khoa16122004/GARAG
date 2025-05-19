@@ -72,6 +72,7 @@ def build_attack(opt, dataset):
         if opt.is_genetic:
 
             goal_function = Double_GoalFunction(opt)
+            print("Goal function done")
             
             attacker = CustomGenetic(
                 transformation=transformation,
