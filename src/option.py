@@ -27,7 +27,7 @@ class Options:
         self.parser.add_argument("--data_dir", type=str, default="./data/{task}/{retriever}/{dataset}-{split}_100.json")
         self.parser.add_argument("--corpus_dir", type=str, default="./data/psgs_w100.tsv")
         self.parser.add_argument("--template_dir", type=str, default="./data/template/{reader}.json")
-        self.parser.add_argument("--model_dir", type=str, default="meta")
+        self.parser.add_argument("--model_dir", type=str, default="meta-llama")
 
         # GPU Setting
         self.parser.add_argument("--gpus", type=int, default=2)
