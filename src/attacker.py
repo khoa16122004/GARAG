@@ -67,7 +67,6 @@ def build_attack(opt, dataset):
         else:
             transformation = trans_cls()
         constraints = [LabelConstraint(), MinWordLength(3), StopwordModification()]
-        raise NotImplementedError("Not implemented for now")
 
         if opt.is_genetic:
 
