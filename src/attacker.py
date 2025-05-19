@@ -505,6 +505,7 @@ class CustomGenetic:
             results.append(result)
 
             if result[0][1][0] < 1:
+                ## terminated condition
                 pred = self.goal_function.generate(result[0][0], self.question)
                 em = EM(answers, pred[0])
                 if em == 0:
