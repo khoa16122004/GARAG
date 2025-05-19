@@ -363,8 +363,8 @@ class Double_GoalFunction:
         with open(opt.template_dir, 'r') as f: 
             template = json.load(f)[0]
         self.reader = Reader_Wrapper(opt, template)
-        self.retriever = Retriever_Wrapper(opt)
         raise NotImplementedError("Not implemented for now")
+        self.retriever = Retriever_Wrapper(opt)
 
 
     def eval(self, contexts, questions, answers):
