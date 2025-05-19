@@ -156,6 +156,9 @@ def _normalize_answer(s):
 def EM(golds, pred):
     pred = _normalize_answer(pred)
     golds = [_normalize_answer(g) for g in golds]
+    print("golds: ", golds)
+    print("pred: ", pred)
+    raise ValueError("golds: {}, pred: {}".format(golds, pred))
     cor = max([gold == pred for gold in golds])
     return cor
 
