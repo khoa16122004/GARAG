@@ -41,8 +41,8 @@ def _load_retriever(opt):
         pretrained = os.path.join("facebook", hf_model_name[retriever_name][0])
         print("Pretrained: ", pretrained)
         tokenizer = AutoTokenizer.from_pretrained(pretrained)
-        d_encoder = DPRC.from_pretrained(os.path.join(opt.model_dir, hf_model_name[retriever_name][0])).to("cuda")
-        q_encoder = DPRQ.from_pretrained(os.path.join(opt.model_dir, hf_model_name[retriever_name][1])).to("cuda")
+        d_encoder = DPRC.from_pretrained(pretrained).to("cuda")
+        q_encoder = DPRQ.from_pretrained(pretrained).to("cuda")
     else:
         raise NotImplementedError("Not supported retriever class")
     d_encoder.eval()
