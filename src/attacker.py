@@ -395,9 +395,7 @@ class CustomGenetic:
                             [gold_pred] + answers
                         )
 
-                        # check = [r for r in populations[-1] if r[1][0] < 1]
-                        # if len(check) > 0:
-                            # check = sorted(check, key=lambda x: x[1][1])
+                      
                         pred = self.goal_function.generate(populations[-1][0][0], self.question)
                         if populations[-1][0][1][0] < 1:
                             em = EM(answers, pred[0])
@@ -438,6 +436,7 @@ class CustomGenetic:
                     break
             except ZeroDivisionError:
                 pass
+            break
         return results
 
     def perform_search(self, context, question, answers):
