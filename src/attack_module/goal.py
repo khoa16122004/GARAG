@@ -364,6 +364,8 @@ class Double_GoalFunction:
             template = json.load(f)[0]
         self.reader = Reader_Wrapper(opt, template)
         self.retriever = Retriever_Wrapper(opt)
+        raise NotImplementedError("Not implemented for now")
+
 
     def eval(self, contexts, questions, answers):
         with torch.no_grad():
