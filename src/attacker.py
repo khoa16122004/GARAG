@@ -384,10 +384,14 @@ class CustomGenetic:
             q_id = i
             texts = [ctx["context"] for ctx in ctxs]
             gold_preds = self.goal_function.generate(texts, question)
+            print("question: ", question)
+            print("Answers: ", answers)
+            print("Gold Preds: ", gold_preds)
+
             try:
                 for gold_pred, ctx in zip(gold_preds, ctxs):
                     if EM(answers, gold_pred) > 0:
-
+                        
                         doc_id = ctx["id"]
                         populations = self.perform_search(
                             ctx["context"],
