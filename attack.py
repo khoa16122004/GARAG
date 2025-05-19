@@ -34,7 +34,7 @@ def main():
 
     elif opt.is_genetic:
         result = attack.attack_dataset(dataset)
-
+    
     elif opt.is_hotflip:
         result = attack.attack_dataset(dataset)
     else:
