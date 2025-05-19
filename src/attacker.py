@@ -392,7 +392,8 @@ class CustomGenetic:
                 for gold_pred, ctx in zip(gold_preds, ctxs):
                     score_EM = EM(answers, gold_pred)
                     print("Score EM: ", score_EM)
-                    if score_EM > 0:
+                    # if score_EM > 0:
+                    if True:
                         
                         doc_id = ctx["id"]
                         populations = self.perform_search(
