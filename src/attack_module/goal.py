@@ -86,7 +86,7 @@ class Reader_Wrapper(ModelWrapper):
         if not self.is_gpt:
             self.is_vllm = opt.is_vllm
             self.tokenizer = self.model.get_tokenizer()
-            self.tokenizer.pad_token = tokenizer.eos_token
+            self.tokenizer.pad_token = self.tokenizer.eos_token
         self.template = template
         self.batch_size = opt.batch_size
 
