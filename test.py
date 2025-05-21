@@ -64,6 +64,7 @@ def main():
             print("Score:", item["score"])
             print("Gold Pred:", item["gold_pred"])
             print("Context:", item["context"])
+            print("Answer:", answers[0])
         # break
         print("="*40)
 
