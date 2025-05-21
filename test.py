@@ -26,38 +26,43 @@ def main():
     logger.info("The name of experiment is {}".format(opt.name))
     logger.info("Attack type is {}".format(opt.method))
 
-    
-    # is the json file
+    # Load dataset
     dataset = ReaderDataset(opt) # get document dataset
     
-    # return genetic algorithm and dataset
+    # Build attack and dataset
     attack, dataset = build_attack(opt, dataset)
 
     for i, d in enumerate(dataset):
-        answers = d["answers"] # list answers     
-        question = d["question"] # question
-        ctxs = d["ctxs"] # contextutal đã được search   
-        q_id = i # id
+        answers = d["answers"]     # list of answers     
+        question = d["question"]   # question
+        ctxs = d["ctxs"]           # list of contexts   
+        q_id = i                   # id
         texts = [ctx["context"] for ctx in ctxs]
         
         golds_preds = attack.goal_function.generate(texts, question)
         
-        scores = attack.goal_function.eval(texts,
-                                           question,
-                                           answers[0])
+        scores = attack.goal_function.eval(texts, question, answers[0])
         
+        # Gộp lại để sort
+        results = []
         for ctx, score, golds_pred in zip(ctxs, scores, golds_preds):
-            print("Ctx: ", ctx["context"])
-            print("Score: ", score)
-            print("Golds Pred: ", golds_pred)
+            results.append({
+                "context": ctx["context"],
+                "score": score,
+                "gold_pred": golds_pred
+            })
+        
+        # Sort theo score[0] giảm dần
+        results_sorted = sorted(results, key=lambda x: x["score"][0], reverse=True)
+        
+        for item in results_sorted:
+            print("="*40)
+            print("Score:", item["score"])
+            print("Gold Pred:", item["gold_pred"])
+            print("Context:", item["context"])
         break
-        # result = attack.attack_dataset(dataset)
-        # print(result)
-    print("Attacker and dataset done")
-    
 
-   
-    
+    print("Attacker and dataset done")
 
 if __name__=="__main__":
     main()
