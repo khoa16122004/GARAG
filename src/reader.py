@@ -80,9 +80,6 @@ class Reader(torch.nn.Module):
         return result
     
     def get_scores(self, input_ids, label_ids):
-        print("input_ids", input_ids.shape)
-        print("label_ids", label_ids.shape)
-
         if input_ids.shape[1] != label_ids.shape[1]:
             min_len = min(input_ids.shape[1], label_ids.shape[1])
             input_ids = input_ids[:, :min_len]
