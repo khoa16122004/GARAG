@@ -116,8 +116,8 @@ class Reader_Wrapper(ModelWrapper):
                 padding=True, 
                 return_tensors="pt",
             )
-            print("Input embđing: ", input_embeddings)
-            print("label embđing: ", label_embeddings)
+            print("Input embđing: ", input_embeddings.shape)
+            print("label embđing: ", label_embeddings.shape)
             raise NotImplementedError("Not support yet")
             results += self.model.get_scores(input_embeddings.input_ids, label_embeddings.input_ids)
 
