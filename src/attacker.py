@@ -401,6 +401,7 @@ class CustomGenetic:
                             question,
                             [gold_pred] + answers
                         )
+                        break
 
                       
                         pred = self.goal_function.generate(populations[-1][0][0], self.question)
