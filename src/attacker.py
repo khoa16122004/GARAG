@@ -456,7 +456,7 @@ class CustomGenetic:
 
         self.context, self.question, self.answers = context, question, answers
         self.current_text = Population(context)
-        
+        print("adversarial context: ", self.current_text.get_perturbed_text())       
         # tính ra retriever_results và reader results
         # retriever scores: với mỗi context đầu vào, tính sim giữa context và question
         # reader scores: với mỗi context đầu vào, tính sim giữa context và answer
