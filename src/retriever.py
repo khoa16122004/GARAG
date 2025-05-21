@@ -263,7 +263,7 @@ class Evaluator(object):
 
 class Retriever(torch.nn.Module):
     def __init__(self, opt):
-        util.seed_everything(22520691)
+        util.set_seed_everything(22520691)
         super().__init__()
         self.tokenizer, self.d_encoder, self.q_encoder = _load_retriever(opt)
         
