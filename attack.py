@@ -5,7 +5,7 @@ from src.task import ReaderDataset, evaluate
 from src.attacker import build_attack
 from textattack.augmentation import Augmenter
 from textattack.attack_args import AttackArgs
-
+from utils import set_seed_everything
 import tqdm
 import os
 import json
@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 def main():
+    set_seed_everything(22520691)
     option = Options("attack")
     opt, message = option.parse(timestr()) # create 
     logger = init_logger(opt)
