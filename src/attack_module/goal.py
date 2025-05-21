@@ -375,9 +375,10 @@ class Double_GoalFunction:
     def eval(self, contexts, questions, answers):
         with torch.no_grad():
             retriever_results = self.retriever(questions, contexts)
-            raise NotImplementedError("VLLM not support yet")
             reader_results = self.reader(contexts, questions, answers)
+            raise NotImplementedError("Not support yet")
             results = [[r1,r2] for r1,r2 in zip(retriever_results, reader_results)]
+
         return results
     
     def generate(self, contexts, question):
