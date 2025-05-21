@@ -67,7 +67,7 @@ class Reader(torch.nn.Module):
     def _cal_label_prob(self, probs, labels):
         result = []
         for prob, label in zip(probs, labels):
-            print("Prob: ", prob)
+            print("Prob: ", prob.shape)
             print("Label: ", label)
             mask = label > 0
             prob, label = prob[mask], label[mask]
