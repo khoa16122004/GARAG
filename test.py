@@ -60,12 +60,13 @@ def main():
 
         for idx in sorted_indices:
             item = results[idx]
-            print("="*40)
             print("Index: ", idx)
             print("Score:", item["score"])
             print("Gold Pred:", item["gold_pred"])
             print("Context:", item["context"])
         # break
+        print("="*40)
+
 
 if __name__=="__main__":
     main()
