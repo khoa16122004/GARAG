@@ -65,7 +65,7 @@ def main():
             print("Score:", item["score"])
             print("Gold Pred:", item["gold_pred"])
             print("Context:", item["context"])
-        break
+        # break
 
 if __name__=="__main__":
     main()
