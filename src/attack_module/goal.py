@@ -118,7 +118,6 @@ class Reader_Wrapper(ModelWrapper):
             )
             print("Input embđing: ", len(input_embeddings))
             print("label embđing: ", len(label_embeddings))
-            raise NotImplementedError("Not support yet")
             results += self.model.get_scores(input_embeddings.input_ids, label_embeddings.input_ids)
 
         return results

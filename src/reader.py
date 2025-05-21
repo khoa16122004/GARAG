@@ -83,7 +83,9 @@ class Reader(torch.nn.Module):
         print("input_ids", input_ids.shape)
         print("label_ids", label_ids.shape)
         outputs = self.model(input_ids=input_ids.to(self.model.device), labels=label_ids.to(self.model.device))
+        print("Outputs", outputs.logits.shape)
         scores = self._cal_label_prob(outputs.logits, label_ids.to(self.model.device))
+        
         return scores
     
     def get_tokenizer(self):
