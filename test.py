@@ -40,7 +40,7 @@ def main():
         q_id = i # id
         texts = [ctx["context"] for ctx in ctxs]
         
-        golds_preds = attack.goal_function(texts, question)
+        golds_preds = attack.goal_function.generate(texts, question)
         
         scores = attack.goal_function.eval(texts,
                                            question,
