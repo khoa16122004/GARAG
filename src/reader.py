@@ -67,6 +67,9 @@ class Reader(torch.nn.Module):
     def _cal_label_prob(self, probs, labels):
         result = []
         for prob, label in zip(probs, labels):
+            print("Prob: ", prob)
+            print("Label: ", label)
+            input("Press Enter to continue...")
             mask = label > 0
             prob, label = prob[mask], label[mask]
             log_softmax = torch.nn.functional.log_softmax(prob, dim=-1)
