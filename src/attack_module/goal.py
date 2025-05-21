@@ -124,9 +124,9 @@ class Reader_Wrapper(ModelWrapper):
 
         inputs = [self.template.format(q=question, d=context) for context in contexts]
         if self.is_gpt:
-            return self.model(contexts, question)
-        if self.is_vllm:
-            return self.model(inputs)
+            outputs = self.model(contexts, question)
+        elif self.is_vllm:
+            outputs = self.model(inputs)
         else:
             inputs = self.tokenizer(
                     inputs,
@@ -135,7 +135,12 @@ class Reader_Wrapper(ModelWrapper):
                     padding=True, 
                     return_tensors="pt",
             )
-            return self.model(**inputs)
+            outputs = self.model(**inputs)
+        # Tách phần answer
+        if isinstance(outputs, list):
+            return [o.split("Answer:")[-1].strip() for o in outputs]
+        else:
+            return outputs.split("Answer:")[-1].strip()
 
 class Retriever_Wrapper(ModelWrapper):
     def __init__(self, opt):
