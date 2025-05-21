@@ -97,11 +97,11 @@ class Reader_Wrapper(ModelWrapper):
         if self.is_gpt:
             results += self.model.get_scores(attacked_contexts, question, answer)
         elif self.is_vllm:
-            inputs = [input + " " + label for input, label in zip(inputs, labels)]
-            print("Inputs: ", inputs)
-            raise NotImplementedError("VLLM not support yet")
+            inputs = [input + " " + label for input, label in zip(inputs, labels)]            # raise NotImplementedError("VLLM not support yet")
             results += self.model.get_scores(inputs, labels)
         else:
+            
+            
             input_embeddings = self.tokenizer(
                 inputs,
                 max_length=512,
@@ -117,6 +117,8 @@ class Reader_Wrapper(ModelWrapper):
                 return_tensors="pt",
             )
             results += self.model.get_scores(input_embeddings.input_ids, label_embeddings.input_ids)
+            print("Input embđing: ", input_embeddings)
+            print("label embđing: ", label_embeddings)
         return results
     
     def generate(self, contexts, question):
