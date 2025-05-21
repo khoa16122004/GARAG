@@ -393,6 +393,7 @@ class CustomGenetic:
                 for gold_pred, ctx in zip(gold_preds, ctxs): # for each gold_pred và context 
                     score_EM = EM(answers, gold_pred) # kiểm trả xem goldpred có mathc với answer không
                     print("Score EM: ", score_EM)
+                    print("Original context: ", ctx["context"])
                     if True:                       
                         doc_id = ctx["id"]
                         
