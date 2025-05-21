@@ -116,8 +116,6 @@ class Reader_Wrapper(ModelWrapper):
                 padding=True, 
                 return_tensors="pt",
             )
-            print("Input embđing: ", len(input_embeddings))
-            print("label embđing: ", len(label_embeddings))
             results += self.model.get_scores(input_embeddings.input_ids, label_embeddings.input_ids)
 
         return results
