@@ -116,9 +116,11 @@ class Reader_Wrapper(ModelWrapper):
                 padding=True, 
                 return_tensors="pt",
             )
-            results += self.model.get_scores(input_embeddings.input_ids, label_embeddings.input_ids)
             print("Input embđing: ", input_embeddings)
             print("label embđing: ", label_embeddings)
+            raise NotImplementedError("Not support yet")
+            results += self.model.get_scores(input_embeddings.input_ids, label_embeddings.input_ids)
+
         return results
     
     def generate(self, contexts, question):
