@@ -8,7 +8,7 @@ import pickle
 import time
 import torch
 import lightning.pytorch as pl
-
+from utils import seed_everything
 from transformers import BertModel, XLMRobertaModel, AlbertModel, T5EncoderModel, DPRContextEncoder, DPRQuestionEncoder
 from transformers import AutoTokenizer
 
@@ -264,10 +264,12 @@ class Evaluator(object):
 
 class Retriever(torch.nn.Module):
     def __init__(self, opt):
+        seed_everything(22520691)
         super().__init__()
         self.tokenizer, self.d_encoder, self.q_encoder = _load_retriever(opt)
-    
+        
     def forward(self, queries, contexts):
+
         queries.to(self.q_encoder.device)
         contexts.to(self.q_encoder.device)
         query_embeddings = self.q_encoder(**queries)
