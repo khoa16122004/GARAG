@@ -58,8 +58,8 @@ class Reader(torch.nn.Module):
     
     def forward(self, input_ids, attention_mask):
         outputs = self.model.generate(input_ids=input_ids.to(self.model.device), attention_mask=attention_mask.to(self.model.device), **self.generate_kwargs)
-        print("Outputs", outputs.shape)
         preds = self.tokenizer.batch_decode(outputs.sequences, skip_special_tokens=True)
+        raise NotImplementedError("Khoa")
         return preds
     
     # def get_loss(self, input_ids, attention_mask):
