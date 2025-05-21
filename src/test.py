@@ -41,12 +41,15 @@ def main():
         texts = [ctx["context"] for ctx in ctxs]
         
         golds_preds = attack.goal_function(texts, question)
-        print("Gold preds: ", golds_preds)
         
         scores = attack.goal_function.eval(texts,
                                            question,
                                            answers[0])
-        print("Scores: ", scores)
+        
+        for ctx, score, golds_pred in zip(ctxs, scores, golds_preds):
+            print("Ctx: ", ctx["context"])
+            print("Score: ", score)
+            print("Golds Pred: ", golds_pred)
         break
         # result = attack.attack_dataset(dataset)
         # print(result)
