@@ -446,47 +446,136 @@ class CustomGenetic:
             break
         return results
 
+    # def perform_search(self, context, question, answers):
+
+    #     for C in self.pre_transformation_constraints:
+    #         if isinstance(C, LabelConstraint):
+    #             C.set_labels([AttackedText(answer) for answer in answers])
+
+    #     self.context, self.question, self.answers = context, question, answers
+    #     self.current_text = Population(context)
+    #     # tính ra retriever_results và reader results
+    #     # retriever scores: với mỗi context đầu vào, tính sim giữa context và question
+    #     # reader scores: với mỗi context đầu vào, tính sim giữa context và answer
+    #     og_scores = self.goal_function.eval([context], 
+    #                                         self.question,
+    #                                         self.answers[0])
+        
+    #     print("og_scores: ", og_scores)
+        
+    #     self.current_text.og_scores = og_scores[0]
+    #     self.indices_to_modify = self._get_modified_indices()
+        
+        
+    #     populations = self._initialize_population()
+    #     print("adversarial context: ", self.current_text.get_perturbed_text())       
+    #     F = np.array([population.get_scores() for population in populations])
+    #     fronts = self.nds.do(F, n_stop_if_ranked=100)
+    #     populations = self.survival.do(F, populations, fronts, n_survive=self.pop_size)
+
+
+    #     results = []
+    #     for i in tqdm(range(self.max_iters)):
+
+    #         if self.not_cross and self.not_mut:
+    #             populations += self._initialize_population()
+    #         else:
+    #             if self.not_sort:
+    #                 parents = [random.choices([i for i in range(len(populations))], k=2) for _ in range(self.parents_num)]
+    #             else:
+    #                 parents = self.selection.do(populations, self.parents_num, 2)
+    #             children = []
+
+    #             for p1, p2 in parents:
+    #                 if self.not_cross:
+    #                     pop_words, pop_indices = populations[p1].get_modified()
+    #                     child = self._mutation(pop_words, pop_indices)
+    #                     children.extend(child)
+    #                     pop_words, pop_indices = populations[p2].get_modified()
+    #                     child = self._mutation(pop_words, pop_indices)
+    #                     children.extend(child)
+    #                 else:
+    #                     child = self._crossover(
+    #                         populations[p1],
+    #                         populations[p2],
+    #                     )
+    #                     children.extend(child)
+    #             populations += children
+            
+    #         F = np.array([population.get_scores() for population in populations])
+
+    #         for f in F:
+    #             if f[0] > 1:
+    #                 f[0] = f[0] * self.retriever_penalty
+    #             if f[1] > 1:
+    #                 f[1] = f[1] * self.reader_penalty
+    #         fronts = self.nds.do(F, n_stop_if_ranked=self.pop_size)
+    #         populations = self.survival.do(F, populations, fronts, n_survive=self.pop_size)
+    #         result = [(population.get_perturbed_text(), population.get_scores(), population.get_metrics(), len(self.indices_to_modify)) for population in populations]
+    #         results.append(result)
+
+    #         if result[0][1][0] < 1:
+    #             ## terminated condition 
+    #             pred = self.goal_function.generate(result[0][0], self.question)
+    #             em = EM(answers, pred[0])
+    #             if em == 0:
+    #                 return results
+    #     return results
+    
     def perform_search(self, context, question, answers):
+        print("=== [1] Bắt đầu perform_search ===")
+        print(f"Context: {context[:100]}...")  # In 100 ký tự đầu context
+        print(f"Question: {question}")
+        print(f"Answers: {answers}")
 
         for C in self.pre_transformation_constraints:
             if isinstance(C, LabelConstraint):
+                print("Set labels cho LabelConstraint")
                 C.set_labels([AttackedText(answer) for answer in answers])
 
         self.context, self.question, self.answers = context, question, answers
         self.current_text = Population(context)
-        # tính ra retriever_results và reader results
-        # retriever scores: với mỗi context đầu vào, tính sim giữa context và question
-        # reader scores: với mỗi context đầu vào, tính sim giữa context và answer
-        og_scores = self.goal_function.eval([context], 
-                                            self.question,
-                                            self.answers[0])
-        
-        print("og_scores: ", og_scores)
-        
+        print("Khởi tạo Population với context gốc.")
+
+        # Tính điểm gốc (original scores)
+        og_scores = self.goal_function.eval([context], self.question, self.answers[0])
+        print(f"og_scores (điểm gốc): {og_scores}")
+
         self.current_text.og_scores = og_scores[0]
         self.indices_to_modify = self._get_modified_indices()
+        print(f"Chỉ số từ có thể sửa: {self.indices_to_modify}")
 
         populations = self._initialize_population()
-        print("adversarial context: ", self.current_text.get_perturbed_text())       
-        F = np.array([population.get_scores() for population in populations])
-        fronts = self.nds.do(F, n_stop_if_ranked=100)
-        populations = self.survival.do(F, populations, fronts, n_survive=self.pop_size)
+        print(f"Khởi tạo populations: {len(populations)} cá thể.")
+        print("adversarial context (ban đầu):", self.current_text.get_perturbed_text())
 
+        F = np.array([population.get_scores() for population in populations])
+        print("Tính điểm cho từng cá thể ban đầu (F.shape={}):".format(F.shape))
+
+        fronts = self.nds.do(F, n_stop_if_ranked=100)
+        print("Non-dominated sorting xong.")
+
+        populations = self.survival.do(F, populations, fronts, n_survive=self.pop_size)
+        print(f"Chọn {len(populations)} cá thể sống sót đầu tiên.")
 
         results = []
         for i in tqdm(range(self.max_iters)):
-
+            print(f"\n=== [2] Vòng lặp tiến hóa {i+1}/{self.max_iters} ===")
             if self.not_cross and self.not_mut:
+                print("Thêm cá thể mới do not_cross và not_mut đều True.")
                 populations += self._initialize_population()
             else:
                 if self.not_sort:
+                    print("Chọn cha mẹ ngẫu nhiên (not_sort=True).")
                     parents = [random.choices([i for i in range(len(populations))], k=2) for _ in range(self.parents_num)]
                 else:
+                    print("Chọn cha mẹ bằng selection.")
                     parents = self.selection.do(populations, self.parents_num, 2)
                 children = []
 
                 for p1, p2 in parents:
                     if self.not_cross:
+                        print(f"Mutation cho parent {p1} và {p2}")
                         pop_words, pop_indices = populations[p1].get_modified()
                         child = self._mutation(pop_words, pop_indices)
                         children.extend(child)
@@ -494,30 +583,38 @@ class CustomGenetic:
                         child = self._mutation(pop_words, pop_indices)
                         children.extend(child)
                     else:
-                        child = self._crossover(
-                            populations[p1],
-                            populations[p2],
-                        )
+                        print(f"Crossover giữa parent {p1} và {p2}")
+                        child = self._crossover(populations[p1], populations[p2])
                         children.extend(child)
+                print(f"Tạo {len(children)} children.")
                 populations += children
-            
+
             F = np.array([population.get_scores() for population in populations])
+            print("Tính lại điểm cho toàn bộ populations.")
 
             for f in F:
                 if f[0] > 1:
                     f[0] = f[0] * self.retriever_penalty
                 if f[1] > 1:
                     f[1] = f[1] * self.reader_penalty
+
             fronts = self.nds.do(F, n_stop_if_ranked=self.pop_size)
+            print("Non-dominated sorting sau khi thêm children.")
+
             populations = self.survival.do(F, populations, fronts, n_survive=self.pop_size)
+            print(f"Chọn {len(populations)} cá thể sống sót sau vòng {i+1}.")
+
             result = [(population.get_perturbed_text(), population.get_scores(), population.get_metrics(), len(self.indices_to_modify)) for population in populations]
             results.append(result)
 
             if result[0][1][0] < 1:
-                ## terminated condition 
+                print("Điều kiện dừng: cá thể tốt nhất đạt tiêu chí.")
                 pred = self.goal_function.generate(result[0][0], self.question)
                 em = EM(answers, pred[0])
+                print(f"Predicted answer: {pred[0]}, EM: {em}")
                 if em == 0:
+                    print("Tấn công thành công!")
                     return results
+        print("Kết thúc perform_search.")
         return results
 
