@@ -99,6 +99,7 @@ class Reader_Wrapper(ModelWrapper):
         elif self.is_vllm:
             inputs = [input + " " + label for input, label in zip(inputs, labels)]
             print("Inputs: ", inputs)
+            raise NotImplementedError("VLLM not support yet")
             results += self.model.get_scores(inputs, labels)
         else:
             input_embeddings = self.tokenizer(
