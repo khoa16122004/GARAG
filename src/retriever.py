@@ -273,9 +273,9 @@ class Retriever(torch.nn.Module):
         query_embeddings = self.q_encoder(**queries)
         context_embeddings = self.d_encoder(**contexts)
 
-        # Normalize embeddings
-        query_embeddings = torch.nn.functional.normalize(query_embeddings, dim=-1)
-        context_embeddings = torch.nn.functional.normalize(context_embeddings, dim=-1)
+        # # Normalize embeddings
+        # query_embeddings = torch.nn.functional.normalize(query_embeddings, dim=-1)
+        # context_embeddings = torch.nn.functional.normalize(context_embeddings, dim=-1)
         scores = [q @ c for q, c in zip(query_embeddings, context_embeddings)]
         return scores
         
