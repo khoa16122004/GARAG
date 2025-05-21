@@ -385,13 +385,11 @@ class CustomGenetic:
             
             # for each contextual in texxts: genetate the ansswer
             gold_preds = self.goal_function.generate(texts, question) 
-            print("question: ", question)
-            print("Answers: ", answers)
-            print("Len contextual: ", len(ctxs))
-            print("Len gold preds: ", gold_preds)
             try:
                 for gold_pred, ctx in zip(gold_preds, ctxs): # for each gold_pred và context 
                     score_EM = EM(answers, gold_pred) # kiểm trả xem goldpred có mathc với answer không
+                    print("question: ", question)
+                    print("Answers: ", answers)
                     print("Score EM: ", score_EM)
                     print("Original context: ", ctx["context"])
                     if True:                       
@@ -456,7 +454,6 @@ class CustomGenetic:
 
         self.context, self.question, self.answers = context, question, answers
         self.current_text = Population(context)
-        print("adversarial context: ", self.current_text.get_perturbed_text())       
         # tính ra retriever_results và reader results
         # retriever scores: với mỗi context đầu vào, tính sim giữa context và question
         # reader scores: với mỗi context đầu vào, tính sim giữa context và answer
@@ -470,6 +467,7 @@ class CustomGenetic:
         self.indices_to_modify = self._get_modified_indices()
 
         populations = self._initialize_population()
+        print("adversarial context: ", self.current_text.get_perturbed_text())       
         F = np.array([population.get_scores() for population in populations])
         fronts = self.nds.do(F, n_stop_if_ranked=100)
         populations = self.survival.do(F, populations, fronts, n_survive=self.pop_size)
