@@ -392,6 +392,7 @@ class CustomGenetic:
                     print("Answers: ", answers)
                     print("Original context: ", ctx["context"])
                     print("Gold pred: ", gold_pred)
+                    input("Press enter to continue")
                     if True:                       
                         doc_id = ctx["id"]
                         
