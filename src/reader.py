@@ -57,7 +57,6 @@ class Reader(torch.nn.Module):
             self.tokenizer.padding_side = "left"
     
     def forward(self, input_ids, attention_mask):
-        input("Input Proccess: ")
         outputs = self.model.generate(input_ids=input_ids.to(self.model.device), attention_mask=attention_mask.to(self.model.device), **self.generate_kwargs)
         preds = self.tokenizer.batch_decode(outputs.sequences, skip_special_tokens=True)
         return preds
@@ -81,11 +80,19 @@ class Reader(torch.nn.Module):
         return result
     
     def get_scores(self, input_ids, label_ids):
+        print("input_ids", input_ids.shape)
+        print("label_ids", label_ids.shape)
 
+        if input_ids.shape[1] != label_ids.shape[1]:
+            min_len = min(input_ids.shape[1], label_ids.shape[1])
+            input_ids = input_ids[:, :min_len]
+            label_ids = label_ids[:, :min_len]
+            print("input_ids", input_ids.shape)
+            print("label_ids", label_ids.shape)
 
         outputs = self.model(input_ids=input_ids.to(self.model.device), labels=label_ids.to(self.model.device))
         scores = self._cal_label_prob(outputs.logits, label_ids.to(self.model.device))
-        
+
         return scores
     
     def get_tokenizer(self):
