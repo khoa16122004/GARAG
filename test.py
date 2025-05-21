@@ -5,7 +5,7 @@ from src.task import ReaderDataset, evaluate
 from src.attacker import build_attack
 from textattack.augmentation import Augmenter
 from textattack.attack_args import AttackArgs
-
+import numpy as np
 import tqdm
 import os
 import json
@@ -33,6 +33,9 @@ def main():
     attack, dataset = build_attack(opt, dataset)
 
     for i, d in enumerate(dataset):
+        print("Sample: ", i)
+        if i == 5:
+            break
         answers = d["answers"]     # list of answers     
         question = d["question"]   # question
         ctxs = d["ctxs"]           # list of contexts   
@@ -43,7 +46,6 @@ def main():
         
         scores = attack.goal_function.eval(texts, question, answers[0])
         
-        # Gộp lại để sort
         results = []
         for ctx, score, golds_pred in zip(ctxs, scores, golds_preds):
             results.append({
@@ -51,18 +53,19 @@ def main():
                 "score": score,
                 "gold_pred": golds_pred
             })
-        
-        # Sort theo score[0] giảm dần
-        results_sorted = sorted(results, key=lambda x: x["score"][0], reverse=True)
-        
-        for item in results_sorted:
+
+        # Lấy mảng score[0] để argsort
+        score0_arr = np.array([item["score"][0] for item in results])
+        sorted_indices = np.argsort(-score0_arr)  # dấu trừ để sort giảm dần
+
+        for idx in sorted_indices:
+            item = results[idx]
             print("="*40)
+            print("Index: ", idx)
             print("Score:", item["score"])
             print("Gold Pred:", item["gold_pred"])
             print("Context:", item["context"])
         break
-
-    print("Attacker and dataset done")
 
 if __name__=="__main__":
     main()
