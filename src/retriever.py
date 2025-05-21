@@ -8,7 +8,7 @@ import pickle
 import time
 import torch
 import lightning.pytorch as pl
-from utils import seed_everything
+from util import seed_everything
 from transformers import BertModel, XLMRobertaModel, AlbertModel, T5EncoderModel, DPRContextEncoder, DPRQuestionEncoder
 from transformers import AutoTokenizer
 
