@@ -77,6 +77,8 @@ class Reader(torch.nn.Module):
         return result
     
     def get_scores(self, input_ids, label_ids):
+        print("input_ids", input_ids.shape)
+        print("label_ids", label_ids.shape)
         outputs = self.model(input_ids=input_ids.to(self.model.device), labels=label_ids.to(self.model.device))
         scores = self._cal_label_prob(outputs.logits, label_ids.to(self.model.device))
         return scores
