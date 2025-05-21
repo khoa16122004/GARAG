@@ -68,25 +68,24 @@ def build_attack(opt, dataset):
             transformation = trans_cls()
         constraints = [LabelConstraint(), MinWordLength(3), StopwordModification()]
 
-        if opt.is_genetic:
 
-            goal_function = Double_GoalFunction(opt)
-            print("Goal function done")
-            
-            attacker = CustomGenetic(
-                transformation=transformation,
-                constraints=constraints,
-                goal_function=goal_function,
-                pct_words_to_swap=opt.perturbation_level,
-                pop_size=opt.transformations_per_example,
-                max_iters=opt.max_iters,
-                not_cross=opt.not_cross,
-                not_mut=opt.not_mut,
-                not_sort=opt.not_sort
-            )
-            return attacker, dataset
-        else:
-            NotImplementedError()
+
+        goal_function = Double_GoalFunction(opt)
+        print("Goal function done")
+        
+        attacker = CustomGenetic(
+            transformation=transformation,
+            constraints=constraints,
+            goal_function=goal_function,
+            pct_words_to_swap=opt.perturbation_level,
+            pop_size=opt.transformations_per_example,
+            max_iters=opt.max_iters,
+            not_cross=opt.not_cross,
+            not_mut=opt.not_mut,
+            not_sort=opt.not_sort
+        )
+        return attacker, dataset
+ 
     
 def binary_tournament(pop, P):
     n_tournaments, n_parents = P.shape
@@ -377,25 +376,27 @@ class CustomGenetic:
         success = 0
         fail = 0
         results = []
-        for i, d in enumerate(tqdm(dataset)):
-            answers = d["answers"]
-            question = d["question"]
-            ctxs = d["ctxs"]
-            q_id = i
+        for i, d in enumerate(tqdm(dataset)): # for each sample in dataset
+            answers = d["answers"] # list answers     
+            question = d["question"] # question
+            ctxs = d["ctxs"] # contextutal đã được search   
+            q_id = i # id
             texts = [ctx["context"] for ctx in ctxs]
-            gold_preds = self.goal_function.generate(texts, question)
+            
+            # for each contextual in texxts: genetate the ansswer
+            gold_preds = self.goal_function.generate(texts, question) 
             print("question: ", question)
             print("Answers: ", answers)
-            print("Gold Preds: ", gold_preds)
-
+            print("Len contextual: ", len(ctxs))
+            print("Len gold preds: ", gold_preds)
             try:
-                for gold_pred, ctx in zip(gold_preds, ctxs):
-                    score_EM = EM(answers, gold_pred)
+                for gold_pred, ctx in zip(gold_preds, ctxs): # for each gold_pred và context 
+                    score_EM = EM(answers, gold_pred) # kiểm trả xem goldpred có mathc với answer không
                     print("Score EM: ", score_EM)
-                    # if score_EM > 0:
-                    if True:
-                        
+                    if True:                       
                         doc_id = ctx["id"]
+                        
+                        # bắt đầu thuật toán
                         populations = self.perform_search(
                             ctx["context"],
                             question,
@@ -454,7 +455,14 @@ class CustomGenetic:
 
         self.context, self.question, self.answers = context, question, answers
         self.current_text = Population(context)
-        og_scores = self.goal_function.eval([context], self.question, self.answers[0])
+        
+        # tính ra retriever_results và reader results
+        # retriever scores: với mỗi context đầu vào, tính sim giữa context và question
+        # reader scores: với mỗi context đầu vào, tính sim giữa context và answer
+        og_scores = self.goal_function.eval([context], 
+                                            self.question,
+                                            self.answers[0])
+        
         self.current_text.og_scores = og_scores[0]
         self.indices_to_modify = self._get_modified_indices()
 
@@ -505,7 +513,7 @@ class CustomGenetic:
             results.append(result)
 
             if result[0][1][0] < 1:
-                ## terminated condition
+                ## terminated condition 
                 pred = self.goal_function.generate(result[0][0], self.question)
                 em = EM(answers, pred[0])
                 if em == 0:

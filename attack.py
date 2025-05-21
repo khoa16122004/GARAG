@@ -26,19 +26,20 @@ def main():
     logger.info("The name of experiment is {}".format(opt.name))
     logger.info("Attack type is {}".format(opt.method))
 
-    dataset = ReaderDataset(opt) # get document dataset
-    attack, dataset = build_attack(opt, dataset)
-    print("Attacker and dataset done")
-    if opt.is_black:
-        result = attack.augment_dataset(dataset)
-
-    elif opt.is_genetic:
-        result = attack.attack_dataset(dataset)
     
-    elif opt.is_hotflip:
-        result = attack.attack_dataset(dataset)
-    else:
-        result = attack.attack_dataset(dataset)
+    # is the json file
+    dataset = ReaderDataset(opt) # get document dataset
+    
+    # return genetic algorithm and dataset
+    attack, dataset = build_attack(opt, dataset)
+    
+    
+    print("Attacker and dataset done")
+
+
+    result = attack.attack_dataset(dataset)
+    
+
     logger.info("Attack finished")
     evaluate(result)
     if opt.is_save:
