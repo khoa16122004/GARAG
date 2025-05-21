@@ -408,8 +408,8 @@ class CustomGenetic:
                             em = EM(answers, pred[0])
 
                             if em == 0:
-                                logger.info(populations[-1][0])
-                                logger.info("Answer : {}, Pred: {}".format(answers, pred))
+                                # logger.info(populations[-1][0])
+                                # logger.info("Answer : {}, Pred: {}".format(answers, pred))
                                 success += 1
                             else:
                                 fail += 1
