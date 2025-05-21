@@ -84,6 +84,7 @@ class Reader(torch.nn.Module):
         print("label_ids", label_ids.shape)
         outputs = self.model(input_ids=input_ids.to(self.model.device), labels=label_ids.to(self.model.device))
         print("Outputs", outputs.logits.shape)
+        raise NotImplementedError()
         scores = self._cal_label_prob(outputs.logits, label_ids.to(self.model.device))
         
         return scores
