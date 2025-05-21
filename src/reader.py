@@ -59,7 +59,6 @@ class Reader(torch.nn.Module):
     def forward(self, input_ids, attention_mask):
         outputs = self.model.generate(input_ids=input_ids.to(self.model.device), attention_mask=attention_mask.to(self.model.device), **self.generate_kwargs)
         preds = self.tokenizer.batch_decode(outputs.sequences, skip_special_tokens=True)
-        raise NotImplementedError("Khoa")
         return preds
     
     # def get_loss(self, input_ids, attention_mask):
@@ -85,7 +84,7 @@ class Reader(torch.nn.Module):
         print("label_ids", label_ids.shape)
         outputs = self.model(input_ids=input_ids.to(self.model.device), labels=label_ids.to(self.model.device))
         print("Outputs", outputs.logits.shape)
-        raise NotImplementedError()
+        raise NotImplementedError("Lam")
         scores = self._cal_label_prob(outputs.logits, label_ids.to(self.model.device))
         
         return scores
