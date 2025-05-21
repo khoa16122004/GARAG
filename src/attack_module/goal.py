@@ -98,6 +98,7 @@ class Reader_Wrapper(ModelWrapper):
             results += self.model.get_scores(attacked_contexts, question, answer)
         elif self.is_vllm:
             inputs = [input + " " + label for input, label in zip(inputs, labels)]
+            print("Inputs: ", inputs)
             results += self.model.get_scores(inputs, labels)
         else:
             input_embeddings = self.tokenizer(

@@ -71,8 +71,9 @@ class Reader(torch.nn.Module):
             prob, label = prob[mask], label[mask]
             log_softmax = torch.nn.functional.log_softmax(prob, dim=-1)
             # from IPython import embed; embed(); exit(0)
-            # nll = -log_softmax.gather(1, label.unsqueeze(0).transpose(0, 1))
-            nll = -log_softmax.gather(1, label.unsqueeze(1)).squeeze(1)
+            nll = -log_softmax.gather(1, label.unsqueeze(0).transpose(0, 1))
+            # nll = -log_softmax.gather(1, label.unsqueeze(1)).squeeze(1)
+
 
             avg_nll = torch.sum(nll, dim=0) * -1
             result.append(float(torch.exp(avg_nll / float(label.shape[0]))))
