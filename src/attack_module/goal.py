@@ -377,7 +377,12 @@ class Double_GoalFunction:
 
     def eval(self, contexts, questions, answers):
         with torch.no_grad():
+            print("cal proccess")
+            print("Questions: ", questions)
+            print("Contexts: ", contexts)
+            print("Answers: ", answers)
             retriever_results = self.retriever(questions, contexts)
+            
             reader_results = self.reader(contexts, questions, answers)
             results = [[r1,r2] for r1,r2 in zip(retriever_results, reader_results)]
 
