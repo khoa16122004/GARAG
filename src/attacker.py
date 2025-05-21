@@ -463,6 +463,8 @@ class CustomGenetic:
                                             self.question,
                                             self.answers[0])
         
+        print("og_scores: ", og_scores)
+        
         self.current_text.og_scores = og_scores[0]
         self.indices_to_modify = self._get_modified_indices()
 
