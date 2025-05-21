@@ -168,7 +168,7 @@ class Retriever_Wrapper(ModelWrapper):
             qs_embedding = self.tokenizer(
                 q, **self.tokenizer_kwargs
             )
-
+            
             scores = [float(score) for score in self.model(qs_embedding, ctxs_embedding)]
 
             results += scores # append

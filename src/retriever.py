@@ -272,6 +272,9 @@ class Retriever(torch.nn.Module):
         contexts.to(self.q_encoder.device)
         query_embeddings = self.q_encoder(**queries)
         context_embeddings = self.d_encoder(**contexts)
+        
+        print("Context: ", context_embeddings[0].max())
+        print("Query: ", query_embeddings[0].max())
         scores = [q@c for q,c in zip(query_embeddings, context_embeddings)]
         return scores
     
