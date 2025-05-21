@@ -156,8 +156,6 @@ def _normalize_answer(s):
 def EM(golds, pred):
     pred = _normalize_answer(pred) # single string
     golds = [_normalize_answer(g) for g in golds] 
-    print("golds: ", golds)
-    print("pred: ", pred)
     cor = max([gold == pred for gold in golds])
     return cor
 
