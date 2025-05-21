@@ -37,7 +37,7 @@ def evaluate(data):
 
     result = [round(r/len(data)*100,1) for r in result] 
     e2e = [round(e / len(data) * 100, 1) for e in e2e]
-    logger.info("ASR_R: {}, ASR_L: {}, ASR_T: {}, EM: {}, Acc: {}".format(result[0], result[1], result[2], e2e[0], e2e[1]))
+    # logger.info("ASR_R: {}, ASR_L: {}, ASR_T: {}, EM: {}, Acc: {}".format(result[0], result[1], result[2], e2e[0], e2e[1]))
 
 
 def get_dataloader(opt, dataset, tokenizer, template=None):
