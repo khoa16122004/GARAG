@@ -392,7 +392,6 @@ class CustomGenetic:
                     print("Answers: ", answers)
                     print("Original context: ", ctx["context"])
                     print("Gold pred: ", gold_pred)
-                    input("Press enter to continue")
                     if True:                       
                         doc_id = ctx["id"]
                         
@@ -463,6 +462,7 @@ class CustomGenetic:
                                             self.answers[0])
         
         print("og_scores: ", og_scores)
+        input("wait")
         
         self.current_text.og_scores = og_scores[0]
         self.indices_to_modify = self._get_modified_indices()
