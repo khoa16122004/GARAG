@@ -65,7 +65,7 @@ def main():
             print("Gold Pred:", item["gold_pred"])
             print("Context:", item["context"])
             print("Answer:", answers[0])
-        # break
+        break
         print("="*40)
 
 
